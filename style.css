@@ -1,0 +1,347 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #F4EDE4;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.calculator {
+    background: #202020;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    flex-shrink: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.header h2 {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.tab.active {
+    color: #fff;
+    border-bottom-color: #ffd700;
+}
+
+.display-container {
+    background: #2d2d2d;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.expression {
+    color: #aaa;
+    font-size: 20px;
+    text-align: right;
+    min-height: 30px;
+    word-wrap: break-word;
+    margin-bottom: 5px;
+}
+
+.display {
+    color: #fff;
+    font-size: 48px;
+    text-align: right;
+    font-weight: 300;
+    word-wrap: break-word;
+}
+
+.memory-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.memory-btn {
+    background: #333;
+    border: none;
+    color: #999;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.memory-btn:hover {
+    background: #444;
+}
+
+.memory-btn:active {
+    transform: scale(0.95);
+}
+
+.memory-btn.active {
+    color: #fff;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+button {
+    background: #3a3a3a;
+    border: none;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+    font-weight: 300;
+}
+
+button:hover {
+    background: #4a4a4a;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.operator {
+    background: #505050;
+    font-size: 24px;
+}
+
+.operator:hover {
+    background: #606060;
+}
+
+.equals {
+    background: #ffd700;
+    color: #000;
+    font-weight: 500;
+}
+
+.equals:hover {
+    background: #ffed4e;
+}
+
+.clear {
+    background: #d32f2f;
+}
+
+.clear:hover {
+    background: #f44336;
+}
+
+.history-panel, .memory-panel {
+    background: #202020;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 350px;
+    max-height: 600px;
+    overflow-y: auto;
+    display: none;
+    flex-shrink: 0;
+}
+
+.history-panel.active, .memory-panel.active {
+    display: block;
+}
+
+@media (min-width: 769px) {
+    .container {
+        flex-wrap: nowrap;
+        align-items: flex-start;
+    }
+    
+    .history-panel.active, .memory-panel.active {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.panel-header {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clear-history {
+    background: #d32f2f;
+    padding: 8px 15px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.history-item {
+    background: #2d2d2d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.history-item:hover {
+    background: #3a3a3a;
+}
+
+.delete-history-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-left: 10px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-history-btn:hover {
+    background: #d32f2f;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.delete-history-btn:active {
+    transform: scale(0.95);
+}
+
+.history-expression {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.history-result {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.empty-state {
+    color: #666;
+    text-align: center;
+    padding: 40px;
+    font-size: 14px;
+}
+
+.memory-value {
+    background: #2d2d2d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.memory-label {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.memory-number {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 300;
+}
+
+.memory-info {
+    color: #666;
+    text-align: center;
+    font-size: 13px;
+    padding: 15px 10px;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .calculator, .history-panel, .memory-panel {
+        max-width: 100%;
+    }
+
+    .display {
+        font-size: 36px;
+    }
+
+    button {
+        padding: 18px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .display {
+        font-size: 28px;
+    }
+
+    button {
+        padding: 15px;
+        font-size: 16px;
+    }
+}
+
+.error {
+    color: #f44336 !important;
+}

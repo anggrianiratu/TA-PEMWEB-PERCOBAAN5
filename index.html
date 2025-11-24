@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Interaktif</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="header">
+                <h2>🧮 Kalkulator</h2>
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('history')">History</button>
+                    <button class="tab" onclick="switchTab('memory')">Memory</button>
+                </div>
+            </div>
+
+            <div class="display-container">
+                <div class="expression" id="expression"></div>
+                <div class="display" id="display">0</div>
+            </div>
+
+            <div class="memory-buttons">
+                <button class="memory-btn" onclick="memoryStore()">MS</button>
+                <button class="memory-btn" onclick="memoryRecall()">MR</button>
+                <button class="memory-btn" onclick="memoryClear()">MC</button>
+                <button class="memory-btn" onclick="memoryAdd()">M+</button>
+                <button class="memory-btn" onclick="memorySubtract()">M-</button>
+            </div>
+
+            <div class="buttons">
+                <button class="clear" onclick="clearEntry()">CE</button>
+                <button class="clear" onclick="clearAll()">C</button>
+                <button class="operator" onclick="deleteDigit()">⌫</button>
+                <button class="operator" onclick="inputOperator('/')">÷</button>
+
+                <button onclick="inputNumber('7')">7</button>
+                <button onclick="inputNumber('8')">8</button>
+                <button onclick="inputNumber('9')">9</button>
+                <button class="operator" onclick="inputOperator('*')">×</button>
+
+                <button onclick="inputNumber('4')">4</button>
+                <button onclick="inputNumber('5')">5</button>
+                <button onclick="inputNumber('6')">6</button>
+                <button class="operator" onclick="inputOperator('-')">−</button>
+
+                <button onclick="inputNumber('1')">1</button>
+                <button onclick="inputNumber('2')">2</button>
+                <button onclick="inputNumber('3')">3</button>
+                <button class="operator" onclick="inputOperator('+')">+</button>
+
+                <button onclick="toggleSign()">+/−</button>
+                <button onclick="inputNumber('0')">0</button>
+                <button onclick="inputDecimal()">.</button>
+                <button class="equals" onclick="calculate()">=</button>
+            </div>
+        </div>
+
+        <div class="history-panel active" id="historyPanel">
+            <div class="panel-header">
+                <span>History</span>
+                <button class="clear-history" onclick="clearHistory()">Hapus</button>
+            </div>
+            <div id="historyList">
+                <div class="empty-state">Belum ada riwayat perhitungan</div>
+            </div>
+        </div>
+
+        <div class="memory-panel" id="memoryPanel">
+            <div class="panel-header">
+                <span>Memory</span>
+            </div>
+            <div class="memory-value">
+                <div class="memory-label">Nilai tersimpan</div>
+                <div class="memory-number" id="memoryDisplay">0</div>
+            </div>
+            <div class="memory-info">
+                Gunakan M+, M-, MS untuk menyimpan nilai
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentValue = '0';
+        let expression = '';
+        let shouldResetDisplay = false;
+        let history = [];
+        let memory = 0;
+
+        function updateDisplay() {
+            const display = document.getElementById('display');
+            const expressionDisplay = document.getElementById('expression');
+            
+            display.textContent = currentValue;
+            
+            // Tampilkan expression lengkap termasuk angka yang sedang diketik
+            if (expression) {
+                if (shouldResetDisplay) {
+                    // Hanya tampilkan expression tanpa angka baru
+                    expressionDisplay.textContent = expression;
+                } else {
+                    // Tampilkan expression + angka yang sedang diketik
+                    expressionDisplay.textContent = expression + ' ' + currentValue;
+                }
+            } else {
+                expressionDisplay.textContent = '';
+            }
+        }
+
+        function inputNumber(num) {
+            if (shouldResetDisplay) {
+                currentValue = num;
+                shouldResetDisplay = false;
+            } else {
+                currentValue = currentValue === '0' ? num : currentValue + num;
+            }
+            updateDisplay();
+        }
+
+        function inputDecimal() {
+            if (shouldResetDisplay) {
+                currentValue = '0.';
+                shouldResetDisplay = false;
+            } else if (!currentValue.includes('.')) {
+                currentValue += '.';
+            }
+            updateDisplay();
+        }
+
+        function inputOperator(op) {
+            if (expression && !shouldResetDisplay) {
+                expression += ' ' + currentValue;
+            } else if (!expression) {
+                expression = currentValue;
+            }
+            
+            const opSymbol = {'+': '+', '-': '−', '*': '×', '/': '÷'}[op];
+            expression += ' ' + opSymbol;
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (!expression) return;
+            
+            let fullExpression = expression + ' ' + currentValue;
+            
+            try {
+                // Konversi simbol ke operator JavaScript
+                let calcExpression = fullExpression
+                    .replace(/×/g, '*')
+                    .replace(/÷/g, '/')
+                    .replace(/−/g, '-');
+                
+                // Evaluasi ekspresi dengan prioritas operator yang benar
+                let result = evaluateExpression(calcExpression);
+                
+                if (!isFinite(result)) {
+                    const displayEl = document.getElementById('display');
+                    displayEl.textContent = 'Error: Pembagian 0';
+                    displayEl.classList.add('error');
+                    displayEl.style.fontSize = '28px';
+                    setTimeout(() => {
+                        displayEl.classList.remove('error');
+                        displayEl.style.fontSize = '';
+                        clearAll();
+                    }, 2000);
+                    return;
+                }
+                
+                addToHistory(fullExpression, result);
+                
+                // Tampilkan expression dengan tanda =
+                document.getElementById('expression').textContent = fullExpression + ' =';
+                
+                currentValue = result.toString();
+                document.getElementById('display').textContent = currentValue;
+                
+                expression = '';
+                shouldResetDisplay = true;
+            } catch (error) {
+                const displayEl = document.getElementById('display');
+                // Cek apakah error pembagian nol
+                if (error.message === 'Division by zero') {
+                    displayEl.textContent = 'Error: Pembagian 0';
+                } else {
+                    displayEl.textContent = 'Error';
+                }
+                displayEl.classList.add('error');
+                displayEl.style.fontSize = '28px';
+                setTimeout(() => {
+                    displayEl.classList.remove('error');
+                    displayEl.style.fontSize = '';
+                    clearAll();
+                }, 2000);
+            }
+        }
+
+        function evaluateExpression(expr) {
+            // Hapus spasi berlebih
+            expr = expr.trim().replace(/\s+/g, ' ');
+            
+            // Split berdasarkan spasi
+            let tokens = expr.split(' ');
+            
+            // Handle pembagian dengan nol
+            for (let i = 0; i < tokens.length; i++) {
+                if (tokens[i] === '/' && parseFloat(tokens[i + 1]) === 0) {
+                    throw new Error('Division by zero');
+                }
+            }
+            
+            // Proses perkalian dan pembagian terlebih dahulu (prioritas tinggi)
+            let i = 0;
+            while (i < tokens.length) {
+                if (tokens[i] === '*' || tokens[i] === '/') {
+                    let left = parseFloat(tokens[i - 1]);
+                    let right = parseFloat(tokens[i + 1]);
+                    let result;
+                    
+                    if (tokens[i] === '*') {
+                        result = left * right;
+                    } else {
+                        result = left / right;
+                    }
+                    
+                    // Ganti 3 token (angka operator angka) dengan hasil
+                    tokens.splice(i - 1, 3, result.toString());
+                    i = 0; // Mulai dari awal lagi
+                } else {
+                    i++;
+                }
+            }
+            
+            // Proses penjumlahan dan pengurangan (prioritas rendah)
+            i = 0;
+            while (i < tokens.length) {
+                if (tokens[i] === '+' || tokens[i] === '-') {
+                    let left = parseFloat(tokens[i - 1]);
+                    let right = parseFloat(tokens[i + 1]);
+                    let result;
+                    
+                    if (tokens[i] === '+') {
+                        result = left + right;
+                    } else {
+                        result = left - right;
+                    }
+                    
+                    tokens.splice(i - 1, 3, result.toString());
+                    i = 0;
+                } else {
+                    i++;
+                }
+            }
+            
+            return parseFloat(tokens[0]);
+        }
+
+        function clearAll() {
+            currentValue = '0';
+            expression = '';
+            shouldResetDisplay = false;
+            document.getElementById('expression').textContent = '';
+            document.getElementById('display').textContent = '0';
+        }
+
+        function clearEntry() {
+            currentValue = '0';
+            updateDisplay();
+        }
+
+        function deleteDigit() {
+            if (currentValue.length > 1) {
+                currentValue = currentValue.slice(0, -1);
+            } else {
+                currentValue = '0';
+            }
+            updateDisplay();
+        }
+
+        function toggleSign() {
+            currentValue = (parseFloat(currentValue) * -1).toString();
+            updateDisplay();
+        }
+
+        function addToHistory(expression, result) {
+            history.unshift({
+                expression: expression,
+                result: result,
+                timestamp: new Date()
+            });
+
+            if (history.length > 5) {
+                history = history.slice(0, 5);
+            }
+
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="empty-state">Belum ada riwayat perhitungan</div>';
+                return;
+            }
+
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="history-item">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;" onclick="useHistoryResult(${index})">
+                            <div class="history-expression">${item.expression}</div>
+                            <div class="history-result">= ${item.result}</div>
+                        </div>
+                        <button class="delete-history-btn" onclick="deleteHistoryItem(${index})" title="Hapus">×</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function useHistoryResult(index) {
+            currentValue = history[index].result.toString();
+            expression = '';
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        function deleteHistoryItem(index) {
+            history.splice(index, 1);
+            renderHistory();
+        }
+
+        function clearHistory() {
+            if (history.length === 0) return;
+            if (confirm('Hapus semua history perhitungan?')) {
+                history = [];
+                renderHistory();
+            }
+        }
+
+        function memoryStore() {
+            memory = parseFloat(currentValue);
+            updateMemoryDisplay();
+            updateMemoryButtons();
+        }
+
+        function memoryRecall() {
+            if (memory !== 0) {
+                currentValue = memory.toString();
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+
+        function memoryClear() {
+            memory = 0;
+            updateMemoryDisplay();
+            updateMemoryButtons();
+        }
+
+        function memoryAdd() {
+            memory += parseFloat(currentValue);
+            updateMemoryDisplay();
+            updateMemoryButtons();
+        }
+
+        function memorySubtract() {
+            memory -= parseFloat(currentValue);
+            updateMemoryDisplay();
+            updateMemoryButtons();
+        }
+
+        function updateMemoryDisplay() {
+            document.getElementById('memoryDisplay').textContent = memory;
+        }
+
+        function updateMemoryButtons() {
+            document.querySelectorAll('.memory-btn').forEach(btn => {
+                if ((btn.textContent === 'MR' || btn.textContent === 'MC') && memory !== 0) {
+                    btn.classList.add('active');
+                } else if (memory === 0) {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('historyPanel').classList.toggle('active', tab === 'history');
+            document.getElementById('memoryPanel').classList.toggle('active', tab === 'memory');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                inputNumber(e.key);
+            } else if (e.key === '.') {
+                inputDecimal();
+            } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+                inputOperator(e.key);
+            } else if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                calculate();
+            } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                clearAll();
+            } else if (e.key === 'Backspace') {
+                deleteDigit();
+            }
+        });
+
+        updateDisplay();
+        renderHistory();
+    </script>
+</body>
+</html>
