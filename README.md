@@ -16,16 +16,19 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
    * Tombol Clear Entry (CE) untuk menghapus angka terakhir.
    * Tombol = untuk menghitung.
    * Tombol titik desimal (.).
+   * Tombol +/− untuk mengubah tanda bilangan.
 
 3. Functionality
    * Operasi aritmatika dasar: tambah, kurang, kali, dan bagi.
    * Perhitungan berantai, Contoh: 5 + 3 × 2 → 11.
    * Penanganan error seperti pembagian dengan nol.
    * Mendukung input keyboard (angka, operator, enter, backspace).
+   * Mengubah tanda angka dari positif ke negatif atau sebaliknya menggunakan tombol +/−.
    
 4. Advanced Features
    * History: Menyimpan 5 perhitungan terakhir.
    * Memory Functions:
+     - MS → Menyimpan nilai pada display ke memori (mengganti nilai sebelumnya).
      - M+ → Menambah nilai display ke memori.
      - M- → Mengurangi nilai display dari memori.
      - MR → Menampilkan nilai yang tersimpan.
@@ -33,9 +36,9 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
    * Responsive design untuk tampilan desktop dan mobile.
   
 ## Teknologi yang Digunakan
-  1. HTML → Struktur tampilan
-  2. CSS → Desain dan layout responsif
-  3. JavaScript → Logika perhitungan, history, memori, dan keyboard support
+  1. HTML → Struktur tampilan.
+  2. CSS → Desain dan layout responsif.
+  3. JavaScript → Logika perhitungan, history, memori, dan keyboard support.
 
 ## Keyboard Support
 | Tombol    | Fungsi                             |
@@ -47,4 +50,7 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
 | Esc       | Clear (C)                          |
 | .         | Titik desimal                      |
 
-
+### Author
+* Nama: Anggriani Luthfiyah Ratu
+* NPM: 2315061058
+* Mata Kuliah: Praktikum Pemrograman Web
