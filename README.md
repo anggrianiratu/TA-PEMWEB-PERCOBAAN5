@@ -21,7 +21,7 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
    * Operasi aritmatika dasar: tambah, kurang, kali, dan bagi.
    * Perhitungan berantai, Contoh: 5 + 3 × 2 → 11.
    * Penanganan error seperti pembagian dengan nol.
-   * Mendukung input keyboard (angka, operator, Enter, Backspace).
+   * Mendukung input keyboard (angka, operator, enter, backspace).
    
 4. Advanced Features
    * History: Menyimpan 5 perhitungan terakhir.
@@ -32,7 +32,19 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
      - MC → Menghapus memori.
    * Responsive design untuk tampilan desktop dan mobile.
   
-  ## Teknologi yang Digunakan
+## Teknologi yang Digunakan
   1. HTML → Struktur tampilan
   2. CSS → Desain dan layout responsif
   3. JavaScript → Logika perhitungan, history, memori, dan keyboard support
+
+## Keyboard Support
+| Tombol    | Fungsi                             |
+| --------- | ---------------------------------- |
+| 0–9       | Input angka                        |
+| + - * /   | Operator                           |
+| Enter / = | Hitung                             |
+| Backspace | Hapus digit terakhir / Clear Entry |
+| Esc       | Clear (C)                          |
+| .         | Titik desimal                      |
+
+
