@@ -17,13 +17,13 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
    * Tombol = untuk menghitung.
    * Tombol titik desimal (.).
 
-2. Functionality
+3. Functionality
    * Operasi aritmatika dasar: tambah, kurang, kali, dan bagi.
    * Perhitungan berantai, Contoh: 5 + 3 × 2 → 11.
    * Penanganan error seperti pembagian dengan nol.
    * Mendukung input keyboard (angka, operator, Enter, Backspace).
    
-3. Advanced Features
+4. Advanced Features
    * History: Menyimpan 5 perhitungan terakhir.
    * Memory Functions:
      - M+ → Menambah nilai display ke memori.
@@ -31,3 +31,8 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
      - MR → Menampilkan nilai yang tersimpan.
      - MC → Menghapus memori.
    * Responsive design untuk tampilan desktop dan mobile.
+  
+  ## Teknologi yang Digunakan
+  1. HTML → Struktur tampilan
+  2. CSS → Desain dan layout responsif
+  3. JavaScript → Logika perhitungan, history, memori, dan keyboard support
