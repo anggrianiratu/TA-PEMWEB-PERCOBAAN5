@@ -17,12 +17,14 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
    * Tombol = untuk menghitung.
    * Tombol titik desimal (.).
    * Tombol +/− untuk mengubah tanda bilangan.
+   * Tombol DEL (ikon delete) untuk menghapus satu digit terakhir.
 
 3. Functionality
    * Operasi aritmatika dasar: tambah, kurang, kali, dan bagi.
    * Perhitungan berantai, Contoh: 5 + 3 × 2 → 11.
    * Penanganan error seperti pembagian dengan nol.
    * Mendukung input keyboard (angka, operator, enter, backspace).
+   * Menghapus satu digit terakhir menggunakan tombol DEL (ikon delete).
    * Mengubah tanda angka dari positif ke negatif atau sebaliknya menggunakan tombol +/−.
    
 4. Advanced Features
