@@ -45,7 +45,7 @@ memiliki fitur lengkap, dan tetap responsif untuk tampilan mobile maupun desktop
 ## Keyboard Support
 | Tombol    | Fungsi                             |
 | --------- | ---------------------------------- |
-| 0–9       | Input angka                        |
+| 0-9       | Input angka                        |
 | + - * /   | Operator                           |
 | Enter / = | Hitung                             |
 | Backspace | Hapus digit terakhir / Clear Entry |
